@@ -21,8 +21,13 @@ public class PageRepository {
     @Qualifier("primaryJdbcTemplate")
     private JdbcTemplate primaryJdbcTemplate;
 
-    public PageEntity findById(int id) {
-        List<PageEntity> entities = primaryJdbcTemplate.query("SELECT * FROM pages WHERE id = ?", new Object[]{id}, new BeanPropertyRowMapper<PageEntity>(PageEntity.class));
-        return entities.isEmpty() ? null : entities.get(0);
+    public List<PageEntity> find(int page, int pageSize) {
+        return primaryJdbcTemplate.query("SELECT * FROM pages LIMIT ?, ?", new Object[]{(page - 1) * pageSize, pageSize}, new BeanPropertyRowMapper<>(PageEntity.class));
+    }
+
+    public PageEntity findById(int id) throws RecordNotFoundException {
+        List<PageEntity> entities = primaryJdbcTemplate.query("SELECT * FROM pages WHERE id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(PageEntity.class));
+        if (entities.isEmpty()) throw new RecordNotFoundException();
+        return entities.get(0);
     }
 }

@@ -46,9 +46,10 @@ public class HttpResponseUtils {
     }
 
     public static class HttpResponseCode {
-        public final static int SUCCESS        = 2000;
-        public final static int LOGIN_FAILED   = 4001;
-        public final static int IDTOKEN_FAILED = 4002;
-        public final static int COMMON_FAILED  = 4003;
+        public final static int SUCCESS          = 2000;
+        public final static int LOGIN_FAILED     = 4001;
+        public final static int IDTOKEN_FAILED   = 4002;
+        public final static int COMMON_FAILED    = 4003;
+        public final static int RECORD_NOT_FOUND = 4004;
     }
 }

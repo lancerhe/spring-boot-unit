@@ -17,12 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HomePageControllerTest extends ControllerAcceptanceTest {
 
     @Test
-    public void response_page_on_home_page() throws Exception {
+    public void response_home_page() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(2000))
-                .andExpect(jsonPath("$.message").value("渲染成功"))
-                .andExpect(jsonPath("$.page.title").value("公司简介"));
+                .andExpect(jsonPath("$.message").value("渲染成功"));
     }
 }

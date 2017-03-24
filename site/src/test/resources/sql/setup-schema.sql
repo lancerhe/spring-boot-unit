@@ -8,6 +8,7 @@ CREATE TABLE `pages` (
   `create_time` int(10) unsigned NOT NULL,
   `update_time` int(10) unsigned NOT NULL,
   `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cname` (`cname`) USING HASH
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE UNIQUE INDEX `cname` ON `pages` (`cname`);
