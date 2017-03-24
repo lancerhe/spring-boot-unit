@@ -4,12 +4,15 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
@@ -18,26 +21,32 @@ import java.sql.SQLException;
  *
  * @author Lancer He <lancer.he@gmail.com>
  */
-public class ControllerAcceptanceTest {
+class ControllerAcceptanceTest {
     @Autowired
-    protected WebApplicationContext context;
+    private WebApplicationContext context;
 
     @Autowired
     @Qualifier("primaryDataSource")
-    private DataSource dataSource;
+    private DataSource primaryDataSource;
 
-    protected MockMvc mockMvc;
+    @Resource
+    @Qualifier("primaryJdbcTemplate")
+    JdbcTemplate primaryJdbcTemplate;
+
+    @Resource
+    @Qualifier("primaryNamedJdbcTemplate")
+    NamedParameterJdbcTemplate primaryNamedJdbcTemplate;
+
+    MockMvc mockMvc;
 
     private static boolean isDataFixtures = false;
 
-    private TestContextManager testContextManager;
-
     @Before
     public void setUpContext() throws Exception {
-        //this is where the magic happens, we actually do "by hand" what the spring runner would do for us,
+        // this is where the magic happens, we actually do "by hand" what the spring runner would do for us,
         // read the JavaDoc for the class bellow to know exactly what it does, the method names are quite accurate though
-        this.testContextManager = new TestContextManager(getClass());
-        this.testContextManager.prepareTestInstance(this);
+        TestContextManager testContextManager = new TestContextManager(getClass());
+        testContextManager.prepareTestInstance(this);
     }
 
     @Before
@@ -58,6 +67,6 @@ public class ControllerAcceptanceTest {
     void loadSQL(String resourceFileName) throws SQLException {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource(resourceFileName));
-        resourceDatabasePopulator.populate(dataSource.getConnection());
+        resourceDatabasePopulator.populate(primaryDataSource.getConnection());
     }
 }

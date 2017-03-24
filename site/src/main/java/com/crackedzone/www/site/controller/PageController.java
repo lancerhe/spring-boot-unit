@@ -7,6 +7,7 @@ import com.crackedzone.www.core.util.HttpResponseUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class PageController {
     @Resource
     private PageRepository pageRepository;
 
-    @RequestMapping(value = "/pages", method = RequestMethod.GET)
+    @RequestMapping(value = "/pages", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getPageList() {
         List<PageEntity> pageEntities = pageRepository.find(1, 10);
@@ -29,7 +30,7 @@ public class PageController {
                 .toString();
     }
 
-    @RequestMapping(value = "/pages/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/pages/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getPage(@PathVariable int id) {
         PageEntity pageEntity = pageRepository.findById(id);
@@ -37,4 +38,21 @@ public class PageController {
                 .put("page", JSON.toJSON(pageEntity))
                 .toString();
     }
+
+    @RequestMapping(value = "/pages/create", method = RequestMethod.POST, produces = "application/json")
+    public String createPage(
+            @RequestParam(value = "title", required = true) String title,
+            @RequestParam(value = "cname", required = true) String cname,
+            @RequestParam(value = "content", required = true) String content,
+            @RequestParam(value = "publish_date", required = true) String publishDate
+    ) {
+        PageEntity pageEntity = new PageEntity();
+        pageEntity.setCname(cname);
+        pageEntity.setTitle(title);
+        pageEntity.setContent(content);
+        pageEntity.setPublishDate(Date.valueOf(publishDate));
+        pageRepository.create(pageEntity);
+        return HttpResponseUtils.success().toString();
+    }
+
 }

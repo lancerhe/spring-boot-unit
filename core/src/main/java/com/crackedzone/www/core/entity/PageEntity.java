@@ -38,10 +38,10 @@ public class PageEntity {
 
     @Column(name = "update_time")
     @JSONField(name = "update_time")
-    private int updateTime;
+    private int updateTime = 0;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean deleted = false;
 
     public int getId() {
         return id;
