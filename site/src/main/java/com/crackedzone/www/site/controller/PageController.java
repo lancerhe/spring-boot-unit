@@ -32,7 +32,7 @@ public class PageController {
 
     @RequestMapping(value = "/pages/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getPage(@PathVariable int id) {
+    public String getPage(@PathVariable Integer id) {
         PageEntity pageEntity = pageRepository.findById(id);
         return HttpResponseUtils.success()
                 .put("page", JSON.toJSON(pageEntity))
@@ -55,4 +55,20 @@ public class PageController {
         return HttpResponseUtils.success().toString();
     }
 
+    @RequestMapping(value = "/pages/save", method = RequestMethod.POST, produces = "application/json")
+    public String savePage(
+            @RequestParam(value = "id", required = true) Integer id,
+            @RequestParam(value = "title", required = true) String title,
+            @RequestParam(value = "cname", required = true) String cname,
+            @RequestParam(value = "content", required = true) String content,
+            @RequestParam(value = "publish_date", required = true) String publishDate
+    ) {
+        PageEntity pageEntity = pageRepository.findById(id);
+        pageEntity.setCname(cname);
+        pageEntity.setTitle(title);
+        pageEntity.setContent(content);
+        pageEntity.setPublishDate(Date.valueOf(publishDate));
+        pageRepository.save(pageEntity);
+        return HttpResponseUtils.success().toString();
+    }
 }

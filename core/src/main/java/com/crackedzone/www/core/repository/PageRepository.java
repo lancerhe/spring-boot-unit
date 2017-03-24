@@ -50,4 +50,18 @@ public class PageRepository {
         }
         return (affectRows > 0);
     }
+
+    public boolean save(PageEntity entity) {
+        entity.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+        int affectRows = 0;
+        try {
+            affectRows = primaryNamedJdbcTemplate.update(
+                    DataEntityUtils.generateNamedUpdateClause(PageEntity.class, "id"),
+                    DataEntityUtils.generateUpdateMapParameterSource(entity, "id")
+            );
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return (affectRows > 0);
+    }
 }

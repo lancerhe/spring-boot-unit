@@ -79,7 +79,7 @@ public class PageControllerTest extends ControllerAcceptanceTest {
                 .andExpect(jsonPath("$.code").value(2000));
 
         PageEntity entity = primaryJdbcTemplate.query(
-                "SELECT * FROM pages ORDER BY id = 2",
+                "SELECT * FROM pages WHERE id = 2",
                 new BeanPropertyRowMapper<>(PageEntity.class)
         ).get(0);
         assertEquals("CNAME", entity.getCname());
