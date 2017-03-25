@@ -1,6 +1,7 @@
 package com.crackedzone.www.site.controller;
 
 import com.crackedzone.www.core.entity.PageEntity;
+import com.crackedzone.www.site.WebSecurityConfig;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,7 +25,9 @@ public class PageControllerTest extends ControllerAcceptanceTest {
 
     @Test
     public void response_pages_on_home_page() throws Exception {
-        this.mockMvc.perform(get("/pages"))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get("/pages")
+                .sessionAttr(WebSecurityConfig.SESSION_KEY, "admin");
+        this.mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(2000))
@@ -35,7 +38,9 @@ public class PageControllerTest extends ControllerAcceptanceTest {
 
     @Test
     public void response_page_id_equals_1_on_home_page() throws Exception {
-        this.mockMvc.perform(get("/pages/1"))
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get("/pages/1")
+                .sessionAttr(WebSecurityConfig.SESSION_KEY, "admin");
+        this.mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(2000))
@@ -49,7 +54,8 @@ public class PageControllerTest extends ControllerAcceptanceTest {
                 .param("title", "TITLE")
                 .param("cname", "CNAME")
                 .param("content", "Content")
-                .param("publish_date", "2017-02-22");
+                .param("publish_date", "2017-02-22")
+                .sessionAttr(WebSecurityConfig.SESSION_KEY, "admin");
         this.mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -72,7 +78,8 @@ public class PageControllerTest extends ControllerAcceptanceTest {
                 .param("title", "TITLE")
                 .param("cname", "CNAME")
                 .param("content", "Content")
-                .param("publish_date", "2017-02-22");
+                .param("publish_date", "2017-02-22")
+                .sessionAttr(WebSecurityConfig.SESSION_KEY, "admin");
         this.mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk())
