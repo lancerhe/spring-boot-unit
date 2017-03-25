@@ -22,7 +22,6 @@ public class PageController {
     private PageRepository pageRepository;
 
     @RequestMapping(value = "/pages", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
     public String getPageList() {
         List<PageEntity> pageEntities = pageRepository.find(1, 10);
         return HttpResponseUtils.success()
@@ -31,7 +30,6 @@ public class PageController {
     }
 
     @RequestMapping(value = "/pages/{id}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
     public String getPage(@PathVariable Integer id) {
         PageEntity pageEntity = pageRepository.findById(id);
         return HttpResponseUtils.success()

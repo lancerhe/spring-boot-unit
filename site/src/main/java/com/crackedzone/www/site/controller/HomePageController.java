@@ -2,7 +2,6 @@ package com.crackedzone.www.site.controller;
 
 import com.crackedzone.www.core.util.HttpResponseUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomePageController {
 
     @RequestMapping("/")
-    @ResponseBody
     public String HomePage() {
         return HttpResponseUtils.success("渲染成功")
                 .toString();
