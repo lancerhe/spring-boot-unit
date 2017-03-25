@@ -39,10 +39,10 @@ public class PageController {
 
     @RequestMapping(value = "/pages/create", method = RequestMethod.POST, produces = "application/json")
     public String createPage(
-            @RequestParam(value = "title", required = true) String title,
-            @RequestParam(value = "cname", required = true) String cname,
-            @RequestParam(value = "content", required = true) String content,
-            @RequestParam(value = "publish_date", required = true) String publishDate
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "cname") String cname,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "publish_date") String publishDate
     ) {
         PageEntity pageEntity = new PageEntity();
         pageEntity.setCname(cname);
@@ -55,11 +55,11 @@ public class PageController {
 
     @RequestMapping(value = "/pages/save", method = RequestMethod.POST, produces = "application/json")
     public String savePage(
-            @RequestParam(value = "id", required = true) Integer id,
-            @RequestParam(value = "title", required = true) String title,
-            @RequestParam(value = "cname", required = true) String cname,
-            @RequestParam(value = "content", required = true) String content,
-            @RequestParam(value = "publish_date", required = true) String publishDate
+            @RequestParam(value = "id") Integer id,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "cname") String cname,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "publish_date") String publishDate
     ) {
         PageEntity pageEntity = pageRepository.findById(id);
         pageEntity.setCname(cname);
