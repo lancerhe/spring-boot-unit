@@ -2,7 +2,7 @@ package com.crackedzone.www.site.controller;
 
 import com.crackedzone.www.core.entity.ManagerEntity;
 import com.crackedzone.www.core.repository.ManagerRepository;
-import com.crackedzone.www.core.util.HttpResponseUtils;
+import com.crackedzone.www.core.HttpResponse;
 import com.crackedzone.www.core.util.MD5Utils;
 import com.crackedzone.www.site.WebSecurityConfig;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String HomePage() {
-        return HttpResponseUtils.success("渲染成功")
+        return HttpResponse.success("渲染成功")
                 .toString();
     }
 
@@ -39,6 +39,6 @@ public class HomePageController {
             throw new RuntimeException("Login failed.");
 
         session.setAttribute(WebSecurityConfig.SESSION_KEY, username);
-        return HttpResponseUtils.success().toString();
+        return HttpResponse.success().toString();
     }
 }

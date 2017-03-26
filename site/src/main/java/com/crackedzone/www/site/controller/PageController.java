@@ -3,7 +3,7 @@ package com.crackedzone.www.site.controller;
 import com.alibaba.fastjson.JSON;
 import com.crackedzone.www.core.entity.PageEntity;
 import com.crackedzone.www.core.repository.PageRepository;
-import com.crackedzone.www.core.util.HttpResponseUtils;
+import com.crackedzone.www.core.HttpResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ public class PageController {
     @RequestMapping(value = "/pages", method = RequestMethod.GET, produces = "application/json")
     public String getPageList() {
         List<PageEntity> pageEntities = pageRepository.find(1, 10);
-        return HttpResponseUtils.success()
+        return HttpResponse.success()
                 .put("pages", JSON.toJSON(pageEntities))
                 .toString();
     }
@@ -32,7 +32,7 @@ public class PageController {
     @RequestMapping(value = "/pages/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getPage(@PathVariable Integer id) {
         PageEntity pageEntity = pageRepository.findById(id);
-        return HttpResponseUtils.success()
+        return HttpResponse.success()
                 .put("page", JSON.toJSON(pageEntity))
                 .toString();
     }
@@ -50,7 +50,7 @@ public class PageController {
         pageEntity.setContent(content);
         pageEntity.setPublishDate(Date.valueOf(publishDate));
         pageRepository.create(pageEntity);
-        return HttpResponseUtils.success().toString();
+        return HttpResponse.success().toString();
     }
 
     @RequestMapping(value = "/pages/save", method = RequestMethod.POST, produces = "application/json")
@@ -67,6 +67,6 @@ public class PageController {
         pageEntity.setContent(content);
         pageEntity.setPublishDate(Date.valueOf(publishDate));
         pageRepository.save(pageEntity);
-        return HttpResponseUtils.success().toString();
+        return HttpResponse.success().toString();
     }
 }
