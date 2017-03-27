@@ -27,8 +27,7 @@ public class HomePageController {
 
     @RequestMapping("/")
     public String HomePage() {
-        return HttpResponse.success("渲染成功")
-                .toString();
+        return HttpResponse.success("渲染成功").toString();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

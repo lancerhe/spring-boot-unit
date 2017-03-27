@@ -1,6 +1,8 @@
 package com.crackedzone.www.core.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -20,4 +22,7 @@ class BaseRepository {
     @Resource
     @Qualifier("primaryNamedJdbcTemplate")
     NamedParameterJdbcTemplate primaryNamedJdbcTemplate;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 }
