@@ -1,14 +1,17 @@
 package com.crackedzone.www.site.controller;
 
 import com.crackedzone.www.core.entity.PageEntity;
+import com.crackedzone.www.core.service.DateTimeService;
 import com.crackedzone.www.site.WebSecurityConfig;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PageControllerTest extends ControllerAcceptanceTest {
+
+    @MockBean
+    private DateTimeService dateTimeService;
 
     @Test
     public void response_pages_on_home_page() throws Exception {
@@ -50,6 +56,7 @@ public class PageControllerTest extends ControllerAcceptanceTest {
 
     @Test
     public void response_success_while_page_create() throws Exception {
+        when(dateTimeService.getCurrentTime()).thenReturn(123);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post("/pages/create")
                 .param("title", "TITLE")
                 .param("cname", "CNAME")
@@ -69,10 +76,13 @@ public class PageControllerTest extends ControllerAcceptanceTest {
         assertEquals("TITLE", entity.getTitle());
         assertEquals("Content", entity.getContent());
         assertEquals("2017-02-22", entity.getPublishDate().toString());
+        assertEquals(123, entity.getCreateTime());
+        assertEquals(0, entity.getUpdateTime());
     }
 
     @Test
     public void response_success_while_page_update() throws Exception {
+        when(dateTimeService.getCurrentTime()).thenReturn(456);
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = post("/pages/save")
                 .param("id", "2")
                 .param("title", "TITLE")
@@ -93,5 +103,6 @@ public class PageControllerTest extends ControllerAcceptanceTest {
         assertEquals("TITLE", entity.getTitle());
         assertEquals("Content", entity.getContent());
         assertEquals("2017-02-22", entity.getPublishDate().toString());
+        assertEquals(456, entity.getUpdateTime());
     }
 }

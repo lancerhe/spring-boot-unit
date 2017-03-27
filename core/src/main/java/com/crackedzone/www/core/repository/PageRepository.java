@@ -1,10 +1,12 @@
 package com.crackedzone.www.core.repository;
 
 import com.crackedzone.www.core.entity.PageEntity;
+import com.crackedzone.www.core.service.DateTimeService;
 import com.crackedzone.www.core.util.DataEntityUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,6 +16,9 @@ import java.util.List;
  */
 @Repository
 public class PageRepository extends BaseRepository {
+
+    @Resource
+    private DateTimeService dateTimeService;
 
     public List<PageEntity> find(int page, int pageSize) {
         return primaryJdbcTemplate.query("SELECT * FROM pages LIMIT ?, ?", new Object[]{(page - 1) * pageSize, pageSize}, new BeanPropertyRowMapper<>(PageEntity.class));
@@ -26,7 +31,7 @@ public class PageRepository extends BaseRepository {
     }
 
     public boolean create(PageEntity entity) {
-        entity.setCreateTime((int) (System.currentTimeMillis() / 1000));
+        entity.setCreateTime(dateTimeService.getCurrentTime());
         int affectRows = 0;
         try {
             affectRows = primaryNamedJdbcTemplate.update(
@@ -40,7 +45,7 @@ public class PageRepository extends BaseRepository {
     }
 
     public boolean save(PageEntity entity) {
-        entity.setUpdateTime((int) (System.currentTimeMillis() / 1000));
+        entity.setUpdateTime(dateTimeService.getCurrentTime());
         int affectRows = 0;
         try {
             affectRows = primaryNamedJdbcTemplate.update(

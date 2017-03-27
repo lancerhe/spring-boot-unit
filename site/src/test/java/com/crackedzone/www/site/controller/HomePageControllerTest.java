@@ -20,7 +20,7 @@ public class HomePageControllerTest extends ControllerAcceptanceTest {
 
     @Test
     public void response_home_page() throws Exception {
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get("/").sessionAttr(WebSecurityConfig.SESSION_KEY, "admin");
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = get("/");
         this.mockMvc.perform(mockHttpServletRequestBuilder)
                 .andDo(print())
                 .andExpect(status().isOk())
